@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: orders
+  name: warehouse
   namespace: homework
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: orders
+      app: warehouse
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -16,39 +16,39 @@ spec:
   template:
     metadata:
       labels:
-        app: orders
+        app: warehouse
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8000"
         prometheus.io/path: "/actuator/prometheus"
     spec:
       containers:
-        - name: orders
-          image: vsamarin/orders:1.1.1
+        - name: warehouse
+          image: vsamarin/warehouse:1.1.1
           imagePullPolicy: Always
           ports:
             - name: web
-              containerPort: 8000
+              containerPort: 8004
           env:
             - name: DB_URL
               valueFrom:
                 configMapKeyRef:
-                  name: orders-config
+                  name: warehouse-config
                   key: db.url
             - name: DB_USER
               valueFrom:
                 configMapKeyRef:
-                  name: orders-config
+                  name: warehouse-config
                   key: db.user
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: orders-secret
+                  name: warehouse-secret
                   key: db.password
             - name: CONTEXT_PATH
-              value: /orders
+              value: /warehouse
             - name: DB_SCHEMA
-              value: orders
+              value: warehouse
             - name: CONDUCTOR_SERVER_URL
               value: https://developer.orkescloud.com/api
             - name: CONDUCTOR_AUTH_KEY

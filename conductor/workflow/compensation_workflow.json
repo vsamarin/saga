@@ -1,0 +1,99 @@
+{
+  "createTime": 1738274563988,
+  "updateTime": 1738274463362,
+  "name": "compensation_workflow",
+  "description": "This is a simple workflow to test order commpensation transactions",
+  "version": 1,
+  "tasks": [
+    {
+      "name": "cancel_courier",
+      "taskReferenceName": "cancel_courier_ref",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "cancel_reserve_product",
+      "taskReferenceName": "cancel_reserve_product_ref",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "cancel_payment",
+      "taskReferenceName": "cancel_payment_ref",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "cancel_order",
+      "taskReferenceName": "cancel_order_ref",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    }
+  ],
+  "inputParameters": [
+    "orderId"
+  ],
+  "outputParameters": {},
+  "failureWorkflow": "",
+  "schemaVersion": 2,
+  "restartable": true,
+  "workflowStatusListenerEnabled": false,
+  "ownerEmail": "samarinvladislav@gmail.com",
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 0,
+  "variables": {},
+  "inputTemplate": {},
+  "enforceSchema": true
+}

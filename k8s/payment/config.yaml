@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payment-config
+  namespace: homework
+  labels:
+    app: payment
+data:
+  db.url: jdbc:postgresql://postgresql:5432/users
+  db.user: test
+  db.schema: payment
+

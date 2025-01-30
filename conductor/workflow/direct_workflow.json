@@ -1,0 +1,112 @@
+{
+  "createTime": 1738265182556,
+  "updateTime": 1738273644785,
+  "name": "direct_workflow",
+  "description": "This is a flow for creating order throuot microservices",
+  "version": 1,
+  "tasks": [
+    {
+      "name": "create_order",
+      "taskReferenceName": "create_order_ref",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "userId": "${workflow.input.userId}",
+        "price": "${workflow.input.price}",
+        "product": "${workflow.input.product}",
+        "address": "${workflow.input.address}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "create_payment",
+      "taskReferenceName": "create_payment_ref",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "userId": "${workflow.input.userId}",
+        "amount": "${workflow.input.price}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "reserve_product",
+      "taskReferenceName": "reserve_product_ref",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "product": "${workflow.input.product}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "appoint_courier",
+      "taskReferenceName": "appoint_courier_ref",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    }
+  ],
+  "inputParameters": [
+    "orderId",
+    "userId",
+    "price",
+    "product",
+    "address"
+  ],
+  "outputParameters": {
+    "orderStatus": "${create_order_ref.output.status}"
+  },
+  "failureWorkflow": "",
+  "schemaVersion": 2,
+  "restartable": true,
+  "workflowStatusListenerEnabled": false,
+  "ownerEmail": "samarinvladislav@gmail.com",
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 0,
+  "variables": {},
+  "inputTemplate": {},
+  "enforceSchema": true
+}
