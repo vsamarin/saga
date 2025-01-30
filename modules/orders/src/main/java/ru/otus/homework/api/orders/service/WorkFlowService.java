@@ -1,0 +1,88 @@
+package ru.otus.homework.api.orders.service;
+
+import com.netflix.conductor.client.http.WorkflowClient;
+import com.netflix.conductor.common.metadata.workflow.StartWorkflowRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
+import ru.otus.homework.api.orders.dto.Order;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class WorkFlowService {
+
+    private final WorkflowClient workflowClient;
+    private final Environment environment;
+
+    public String startDirectFlow(Order order) {
+        StartWorkflowRequest request = new StartWorkflowRequest();
+        request.setName("direct_workflow");
+        request.setVersion(1);
+        request.setCorrelationId("api-triggered");
+        request.setInput(map(order));
+
+        String TASK_DOMAIN_PROPERTY = "conductor.worker.all.domain";
+        String domain = environment.getProperty(TASK_DOMAIN_PROPERTY, String.class, "");
+
+        if (!domain.isEmpty()) {
+            Map<String, String> taskToDomain = new HashMap<>();
+            taskToDomain.put("*", domain);
+            request.setTaskToDomain(taskToDomain);
+        }
+
+        String workflowId;
+        try {
+            workflowId = workflowClient.startWorkflow(request);
+            log.info("Workflow id: {}", workflowId);
+            return workflowId;
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+        }
+
+        throw new RuntimeException("Workflow start failed");
+    }
+
+    public void startCompensationFlow(UUID orderId) {
+        StartWorkflowRequest request = new StartWorkflowRequest();
+        request.setName("compensation_workflow");
+        request.setVersion(1);
+        request.setCorrelationId("api-triggered");
+        HashMap<String, Object> inputMap = new HashMap<>();
+        inputMap.put("orderId", orderId);
+        request.setInput(inputMap);
+
+        String TASK_DOMAIN_PROPERTY = "conductor.worker.all.domain";
+        String domain = environment.getProperty(TASK_DOMAIN_PROPERTY, String.class, "");
+
+        if (!domain.isEmpty()) {
+            Map<String, String> taskToDomain = new HashMap<>();
+            taskToDomain.put("*", domain);
+            request.setTaskToDomain(taskToDomain);
+        }
+
+        String workflowId;
+        try {
+            workflowId = workflowClient.startWorkflow(request);
+            log.info("Workflow id: {}", workflowId);
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+        }
+    }
+
+    public Map<String, Object> map(Order dto) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", dto.getId());
+        map.put("userId", dto.getUserId());
+        map.put("price", dto.getPrice());
+        map.put("product", dto.getProduct());
+        map.put("address", dto.getAddress());
+        return map;
+    }
+
+}

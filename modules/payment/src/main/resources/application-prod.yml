@@ -1,0 +1,12 @@
+config:
+  db:
+    url: ${DB_URL}
+    schema: ${DB_SCHEMA}
+    user: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+conductor:
+  client:
+    rootUri: ${CONDUCTOR_SERVER_URL}
+    keyId: ${CONDUCTOR_AUTH_KEY}
+    secret: ${CONDUCTOR_AUTH_SECRET}

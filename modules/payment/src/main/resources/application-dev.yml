@@ -1,0 +1,28 @@
+config:
+  db:
+    url: jdbc:postgresql://localhost:5439/users
+    schema: orders
+    user: test
+    password: test
+  idempotency:
+    key:
+      expiration: 5
+
+spring:
+  jpa:
+    show-sql: true
+
+conductor:
+  worker:
+    all:
+      domain: saga
+  server:
+    url: https://developer.orkescloud.com/api
+  security:
+    client:
+      key-id: spk39518fc1b-def0-11ef-aeb1-c259128d4f69
+      secret: qezQQ336JPvw1azvCCfbOyXy6FuCnEKpIEaZotxLPdfcoqkr
+  client:
+    rootUri: https://developer.orkescloud.com/api #http://localhost:8004/api
+    key-id: spk39518fc1b-def0-11ef-aeb1-c259128d4f69
+    secret: qezQQ336JPvw1azvCCfbOyXy6FuCnEKpIEaZotxLPdfcoqkr
