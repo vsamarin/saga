@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders
+  namespace: homework
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: orders
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/actuator/prometheus"
+    spec:
+      containers:
+        - name: orders
+          image: vsamarin/idempotency:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - name: web
+              containerPort: 8004
+          env:
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: orders-config
+                  key: db.url
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: orders-config
+                  key: db.user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: orders-secret
+                  key: db.password
+            - name: CONTEXT_PATH
+              value: /orders
+            - name: DB_SCHEMA
+              value: orders
+            - name: REDIS_HOST
+              value: redis-master
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_DB
+              value: "0"
+            - name: REDIS_PASSWORD
+              value: my-password
+            - name: IDEMPOTENCY_KEY_EXPIRATION
+              value: "5"

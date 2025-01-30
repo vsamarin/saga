@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: homework
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: users
+  POSTGRES_USER: test
+

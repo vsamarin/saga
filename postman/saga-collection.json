@@ -1,0 +1,274 @@
+{
+	"info": {
+		"_postman_id": "8395d950-d4eb-4c10-b0a9-63c5bf8156ed",
+		"name": "idempotency",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19330437"
+	},
+	"item": [
+		{
+			"name": "01_get_X-REQUEST_ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"pm.collectionVariables.set(\"X-Request-ID\", response.value);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/orders/api/v1/order/idempotency-key",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"api",
+						"v1",
+						"order",
+						"idempotency-key"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02_create_order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"pm.collectionVariables.set(\"orderId\", response.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": 1,\r\n  \"price\": 74,\r\n  \"product\": \"Молоко\",\r\n  \"version\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/api/v1/order?X-Request-ID={{X-Request-ID}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"api",
+						"v1",
+						"order"
+					],
+					"query": [
+						{
+							"key": "X-Request-ID",
+							"value": "{{X-Request-ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03_get_order",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/orders/api/v1/order/{{orderId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"api",
+						"v1",
+						"order",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04_create_order_repeat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": 1,\r\n  \"price\": 74,\r\n  \"product\": \"Молоко\",\r\n  \"version\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/api/v1/order?X-Request-ID={{X-Request-ID}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"api",
+						"v1",
+						"order"
+					],
+					"query": [
+						{
+							"key": "X-Request-ID",
+							"value": "{{X-Request-ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05_create_order_repeat_again",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": 1,\r\n  \"price\": 74,\r\n  \"product\": \"Молоко\",\r\n  \"version\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/api/v1/order?X-Request-ID={{X-Request-ID}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"api",
+						"v1",
+						"order"
+					],
+					"query": [
+						{
+							"key": "X-Request-ID",
+							"value": "{{X-Request-ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "06_get_order",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/orders/api/v1/order/{{orderId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"api",
+						"v1",
+						"order",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "07_update_order",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": 1,\r\n  \"price\": 87,\r\n  \"product\": \"Творог\",\r\n  \"version\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/api/v1/order/{{orderId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"api",
+						"v1",
+						"order",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "08_update_order_repeat",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": 1,\r\n  \"price\": 87,\r\n  \"product\": \"Творог\",\r\n  \"version\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/api/v1/order/{{orderId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"api",
+						"v1",
+						"order",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "X-Request-ID",
+			"value": ""
+		},
+		{
+			"key": "orderId",
+			"value": ""
+		}
+	]
+}
