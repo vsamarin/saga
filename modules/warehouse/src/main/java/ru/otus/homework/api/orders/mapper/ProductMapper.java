@@ -1,6 +1,7 @@
 package ru.otus.homework.api.orders.mapper;
 
 import org.springframework.stereotype.Component;
+import ru.otus.homework.api.orders.dto.Product;
 import ru.otus.homework.api.orders.entity.ProductEntity;
 
 import java.util.HashMap;
@@ -15,6 +16,15 @@ public class ProductMapper implements Mapper<Map<String, Object>, ProductEntity>
         ProductEntity product = new ProductEntity();
         product.id(UUID.fromString(String.valueOf(map.get("product"))));
         product.orderId(UUID.fromString(String.valueOf(map.get("orderId"))));
+        return product;
+    }
+
+    public Product mapTo(ProductEntity entity) {
+        Product product = new Product();
+        product.setId(entity.id());
+        product.setOrderId(entity.orderId());
+        product.setName(entity.name());
+        product.setStatus(entity.status());
         return product;
     }
 

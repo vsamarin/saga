@@ -3,6 +3,7 @@ package ru.otus.homework.api.orders.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.otus.homework.api.orders.entity.CourierEntity;
+import ru.otus.homework.api.orders.exception.NotFoundException;
 import ru.otus.homework.api.orders.repository.CourierRepository;
 
 import java.util.UUID;
@@ -24,6 +25,11 @@ public class DeliveryService {
         courierRepository
                 .findByOrderId(orderId)
                 .map(p -> courierRepository.save(p.orderId(null)));
+    }
+
+    public CourierEntity findByOrderId(UUID orderId) {
+        return courierRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new NotFoundException(String.format("Courier not found for order", orderId)));
     }
 
 }

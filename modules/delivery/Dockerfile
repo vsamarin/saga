@@ -20,6 +20,6 @@ WORKDIR /app
 # Копируем результаты сборки в папку с приложением
 COPY --from=builder src/target/*.jar ./app.jar
 # Документируем порт на котором будет работать приложение
-EXPOSE 8004
+EXPOSE 8006
 # Запускаем приложение
 ENTRYPOINT ["java","-Dspring.profiles.active=prod","-jar","./app.jar"]

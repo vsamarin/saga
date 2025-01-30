@@ -16,7 +16,7 @@ public class OpenApiConfig {
 
     private Info info() {
         return new Info()
-                .title("ORDERS API")
+                .title("Workhouse API")
                 .version("v1");
     }
 

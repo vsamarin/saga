@@ -39,7 +39,7 @@ public class CancelReserveProductWorker implements Worker {
 
     @Override
     public String getTaskDefName() {
-        return "cancel_payment";
+        return "cancel_reserve_product";
     }
 
 }

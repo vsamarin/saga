@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import ru.otus.homework.api.orders.entity.PaymentEntity;
 import ru.otus.homework.api.orders.mapper.PaymentMapper;
 import ru.otus.homework.api.orders.service.PaymentService;
+import ru.otus.homework.api.orders.service.WorkFlowService;
+
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -16,6 +19,7 @@ import ru.otus.homework.api.orders.service.PaymentService;
 public class CreatePaymentWorker implements Worker {
 
     private final PaymentService paymentService;
+    private final WorkFlowService workFlowService;
     private final PaymentMapper paymentMapper;
 
     @Override
@@ -29,6 +33,8 @@ public class CreatePaymentWorker implements Worker {
             return result;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+            String orderId = (String) task.getInputData().get("orderId");
+            workFlowService.startCompensationFlow(UUID.fromString(orderId));
             var result = new TaskResult(task);
             result.setStatus(TaskResult.Status.FAILED);
             result.addOutputData("error", e.getMessage());

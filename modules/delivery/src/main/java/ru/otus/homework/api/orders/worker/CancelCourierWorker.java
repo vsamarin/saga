@@ -30,7 +30,7 @@ public class CancelCourierWorker implements Worker {
 
     @Override
     public String getTaskDefName() {
-        return "cancel_payment";
+        return "cancel_courier";
     }
 
 }

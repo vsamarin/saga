@@ -6,7 +6,9 @@ import com.netflix.conductor.common.metadata.tasks.TaskResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.otus.homework.api.orders.entity.CourierEntity;
 import ru.otus.homework.api.orders.service.DeliveryService;
+import ru.otus.homework.api.orders.service.WorkFlowService;
 
 import java.util.UUID;
 
@@ -16,19 +18,24 @@ import java.util.UUID;
 public class AppointCourierWorker implements Worker {
 
     private final DeliveryService deliveryService;
+    private final WorkFlowService workFlowService;
 
     @Override
     public TaskResult execute(Task task) {
         try {
             log.info("Input data: {}", task.getInputData());
             String orderId = (String) task.getInputData().get("orderId");
-            deliveryService.appoint(UUID.fromString(orderId));
+            CourierEntity courier = deliveryService.appoint(UUID.fromString(orderId));
             var result = new TaskResult(task);
-            result.addOutputData("orderId", orderId);
+            result.addOutputData("id", courier.id());
+            result.addOutputData("orderId", courier.orderId());
+            result.addOutputData("name", courier.name());
             result.setStatus(TaskResult.Status.COMPLETED);
             return result;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+            String orderId = (String) task.getInputData().get("orderId");
+            workFlowService.startCompensationFlow(UUID.fromString(orderId));
             var result = new TaskResult(task);
             result.setStatus(TaskResult.Status.FAILED);
             result.addOutputData("error", e.getMessage());
@@ -38,6 +45,7 @@ public class AppointCourierWorker implements Worker {
 
     @Override
     public String getTaskDefName() {
-        return "create_payment";
+        return "appoint_courier";
     }
+
 }

@@ -1,15 +1,3 @@
-/*
- * Copyright 2020 Conductor Authors.
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
- */
 package ru.otus.homework.api.orders.config;
 
 import com.netflix.conductor.client.automator.TaskRunnerConfigurer;
@@ -22,6 +10,7 @@ import com.netflix.conductor.sdk.workflow.executor.WorkflowExecutor;
 import com.netflix.conductor.sdk.workflow.executor.task.AnnotatedWorkerExecutor;
 import io.orkes.conductor.client.ApiClient;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -36,13 +25,19 @@ import java.util.Optional;
 @Configuration
 public class ConductorClientConfig {
 
+    @Value("${conductor.client.rootUri}")
+    private String rootUri;
+    @Value("${conductor.client.keyId}")
+    private String keyId;
+    @Value("${conductor.client.secret}")
+    private String secret;
+
     @Bean
     public ConductorClient conductorClient() {
         return ApiClient.builder()
                 //.useEnvVariables(true)
-                .basePath("https://developer.orkescloud.com/api")
-                .credentials("spk39518fc1b-def0-11ef-aeb1-c259128d4f69",
-                        "qezQQ336JPvw1azvCCfbOyXy6FuCnEKpIEaZotxLPdfcoqkr")
+                .basePath(rootUri)
+                .credentials(keyId, secret)
                 .build();
     }
 
@@ -68,7 +63,6 @@ public class ConductorClientConfig {
             log.info("Using {} threads for {} worker", threadCount, worker.getTaskDefName());
             taskThreadCount.put(worker.getTaskDefName(), threadCount);
         }
-
 
         TaskRunnerConfigurer.Builder builder = new TaskRunnerConfigurer.Builder(taskClient, workers)
                 .withTaskThreadCount(taskThreadCount)

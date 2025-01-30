@@ -3,6 +3,7 @@ package ru.otus.homework.api.orders.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.otus.homework.api.orders.entity.ProductEntity;
+import ru.otus.homework.api.orders.exception.NotFoundException;
 import ru.otus.homework.api.orders.repository.ProductRepository;
 
 import java.util.UUID;
@@ -16,7 +17,7 @@ public class ProductService {
     public ProductEntity reserve(ProductEntity entity) {
         return productRepository
                 .findById(entity.id())
-                .map(p -> productRepository.save(p.status(ProductEntity.Status.RESERVED)))
+                .map(p -> productRepository.save(p.status(ProductEntity.Status.RESERVED).orderId(entity.orderId())))
                 .orElseThrow(() -> new RuntimeException(String.format("Product %s not found failed", entity.id())));
     }
 
@@ -24,6 +25,12 @@ public class ProductService {
         productRepository
                 .findByOrderId(orderId)
                 .map(p -> productRepository.save(p.orderId(null).status(ProductEntity.Status.AVAILABLE)));
+    }
+
+    public ProductEntity findByIdOrderId(UUID orderId) {
+        return productRepository
+                .findByOrderId(orderId)
+                .orElseThrow(() -> new NotFoundException(String.format("Product %s not found", orderId)));
     }
 
 }

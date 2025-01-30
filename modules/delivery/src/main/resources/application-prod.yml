@@ -7,10 +7,6 @@ config:
 
 conductor:
   client:
-    rootUri: https://developer.orkescloud.com/api #http://localhost:8080/api
-    keyId: spk39518fc1b-def0-11ef-aeb1-c259128d4f69
-    secret: qezQQ336JPvw1azvCCfbOyXy6FuCnEKpIEaZotxLPdfcoqkr
-  server:
-    url: https://developer.orkescloud.com/api
-    keyId: spk39518fc1b-def0-11ef-aeb1-c259128d4f69
-    secret: qezQQ336JPvw1azvCCfbOyXy6FuCnEKpIEaZotxLPdfcoqkr
+    rootUri: ${CONDUCTOR_SERVER_URL}
+    keyId: ${CONDUCTOR_AUTH_KEY}
+    secret: ${CONDUCTOR_AUTH_SECRET}

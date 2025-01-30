@@ -18,11 +18,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class ExceptionHandler {
 
-    @org.springframework.web.bind.annotation.ExceptionHandler({ConflictException.class})
-    public ResponseEntity<?> unprocessableEntity(ConflictException e) {
-        return processException(e, HttpStatus.CONFLICT);
-    }
-
     @org.springframework.web.bind.annotation.ExceptionHandler({Exception.class, Throwable.class})
     public ResponseEntity<?> internalServerError(Exception e) {
         return processException(e, HttpStatus.INTERNAL_SERVER_ERROR);
