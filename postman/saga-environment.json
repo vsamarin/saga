@@ -1,6 +1,6 @@
 {
-	"id": "df678bce-69bd-495c-b80d-4348b90961ed",
-	"name": "idempotency-env",
+	"id": "089e9425-7527-4d4b-9c84-da7b3dc28e09",
+	"name": "saga-env",
 	"values": [
 		{
 			"key": "baseUrl",
@@ -10,6 +10,6 @@
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2025-01-29T23:45:23.852Z",
+	"_postman_exported_at": "2025-01-31T01:28:42.643Z",
 	"_postman_exported_using": "Postman/11.30.2"
 }

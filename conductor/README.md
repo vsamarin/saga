@@ -50,3 +50,11 @@ ___
 Тут же можно отслеживать параметры с которыми запускались шаги flow:
 ![img.png](images/img_11.png)
 Запуск Compensation Flow осуществляется автоматический worker-ами в случае возникновения ошибки в обработке задачи.
+
+___
+
+Схема выполнения Direct Flow:
+![img.png](images/direct_flow_schema.png)
+
+Схема выполнения Compensation Flow:
+![img.png](images/compensation_flow_schema.png)

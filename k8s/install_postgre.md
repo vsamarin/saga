@@ -7,7 +7,7 @@ kubectl apply -f ./postgresql/
 ## Connect to Postgres
 
 ```shell
-kubectl exec -it postgresql-5db9f48876-9v4n8 -- psql -h localhost -U test -p 5432 users
+kubectl exec -it postgresql-5db9f48876-9v4n8 -n homework-- psql -h localhost -U test -p 5432 users
 ```
 ___
 
