@@ -1,17 +1,17 @@
-## Build Docker Image
+## Паттерн "Saga" с использованием orkes conductor
 
-```shell
-docker build . --platform linux/amd64 -t vsamarin/idempotency:1.0.0
-```
+## Схема выполнения Direct Flow:
 
-## Push Docker Image
+![img.png](conductor/images/direct_flow_schema.png)
 
-```shell
-docker push vsamarin/idempotency:1.0.0
-```
+___
 
-## Run Docker Image
+## Схема выполнения Compensation Flow:
 
-```shell
-docker run -p 8080:8000 --env-file .env vsamarin/idempotency:1.0.0
-```
+![img.png](conductor/images/compensation_flow_schema.png)
+
+## Links
+
+[orkes.io](https://orkes.io/)
+
+[sandbox](https://developer.orkescloud.com/)
